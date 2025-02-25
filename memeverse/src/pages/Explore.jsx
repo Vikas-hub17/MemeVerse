@@ -1,55 +1,42 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchMemes } from '../api/memeAPI';
-import useInfiniteScroll from '../hooks/useInfiniteScroll';
+import MemeCardComponent from '../components/MemeCard';
 import FilterSortBar from '../components/FilterSortBar';
-import { motion } from 'framer-motion';
-import { fetchFilteredMemes } from '../api/exploreAPI';
+import { ExploreContainer, ExploreTitle, MemeGrid } from '../styles/ExploreStyles';
 
 const Explore = () => {
   const [memes, setMemes] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const loadMoreMemes = useCallback(async (stopFetching) => {
-    setLoading(true);
-    try {
-      const newMemes = await fetchMemes(page, 10);
-      if (newMemes.length === 0) {
-        stopFetching(); // No more memes to load
-      } else {
-        setMemes((prev) => [...prev, ...newMemes]);
-        setPage((prev) => prev + 1);
-      }
-    } catch (err) {
-      setError('Failed to load memes.');
-    } finally {
-      setLoading(false);
-    }
-  }, [page]);
-
-  const [lastMemeRef, isFetching] = useInfiniteScroll(loadMoreMemes);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadMoreMemes(() => {});
-  }, []); // Initial meme load
+    const fetchAllMemes = async () => {
+      try {
+        const memeData = await fetchMemes();
+        setMemes(memeData.slice(0, 20));
+      } catch (error) {
+        console.error('Failed to fetch memes:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllMemes();
+  }, []);
 
   return (
-    <div className="max-w-3xl mx-auto p-5">
-      <h1 className="text-3xl font-bold mb-4">Explore Memes</h1>
-      {memes.map((meme, index) => (
-        <div
-          key={meme.id}
-          ref={index === memes.length - 1 ? lastMemeRef : null}
-          className="mb-6 p-4 bg-white dark:bg-gray-800 rounded shadow"
-        >
-          <img src={meme.url} alt={meme.name} loading="lazy" className="w-full rounded" />
-          <h2 className="text-xl mt-2">{meme.name}</h2>
-        </div>
-      ))}
-      {loading && <p className="text-center">Loading more memes...</p>}
-      {error && <p className="text-red-500 text-center">{error}</p>}
-    </div>
+    <ExploreContainer>
+      <ExploreTitle>🧭 Explore Memes</ExploreTitle>
+      <FilterSortBar />
+      {loading ? (
+        <p>Loading memes...</p>
+      ) : (
+        <MemeGrid>
+          {memes.map((meme) => (
+            <MemeCardComponent key={meme.id} image={meme.url} title={meme.name} />
+          ))}
+        </MemeGrid>
+      )}
+    </ExploreContainer>
   );
 };
 

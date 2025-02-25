@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { ToggleButton } from '../styles/DarkModeStyles';
 
 const DarkModeToggle = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -8,12 +9,9 @@ const DarkModeToggle = () => {
   }, [isDarkMode]);
 
   return (
-    <button
-      onClick={() => setIsDarkMode(!isDarkMode)}
-      className="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded"
-    >
+    <ToggleButton onClick={() => setIsDarkMode(!isDarkMode)}>
       {isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
-    </button>
+    </ToggleButton>
   );
 };
 

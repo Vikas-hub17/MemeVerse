@@ -2,6 +2,15 @@ import { useEffect, useState } from 'react';
 import { fetchUserProfile, fetchUserMemes, updateUserProfile } from '../api/profileAPI';
 import { useAuth } from '../context/AuthContext';
 import { uploadMemeToImgBB } from '../api/uploadMeme';
+import {
+  ProfileContainer,
+  ProfileHeader,
+  ProfileImage,
+  ProfileInfo,
+  ProfileButton,
+  MemeGrid,
+  MemeImage
+} from '../styles/ProfileStyles';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -45,11 +54,10 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-5">
-      <h1 className="text-3xl font-bold mb-4">👤 Your Profile</h1>
-      <div className="flex items-center gap-4">
-        <img src={formData.profilePicture || 'https://via.placeholder.com/150'} alt="Profile" className="w-24 h-24 rounded-full" />
-        <div>
+    <ProfileContainer>
+      <ProfileHeader>
+        <ProfileImage src={formData.profilePicture || 'https://via.placeholder.com/150'} alt="Profile" />
+        <ProfileInfo>
           {editing ? (
             <>
               <input type="file" onChange={handleImageUpload} />
@@ -57,31 +65,30 @@ const Profile = () => {
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="block mt-2 p-2 rounded border"
               />
               <textarea
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                className="block mt-2 p-2 rounded border"
               />
-              <button onClick={handleSave} className="mt-2 px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+              <ProfileButton onClick={handleSave}>Save</ProfileButton>
             </>
           ) : (
             <>
-              <h2 className="text-xl font-semibold">{profile?.name}</h2>
+              <h2>{profile?.name}</h2>
               <p>{profile?.bio}</p>
-              <button onClick={() => setEditing(true)} className="mt-2 px-4 py-2 bg-gray-700 text-white rounded">Edit Profile</button>
+              <ProfileButton onClick={() => setEditing(true)}>Edit Profile</ProfileButton>
             </>
           )}
-        </div>
-      </div>
-      <h2 className="text-2xl font-bold mt-6">Your Uploaded Memes</h2>
-      <div className="grid grid-cols-2 gap-4 mt-4">
+        </ProfileInfo>
+      </ProfileHeader>
+
+      <h2>Your Memes</h2>
+      <MemeGrid>
         {memes.map((meme) => (
-          <img key={meme._id} src={meme.imageUrl} alt="Uploaded Meme" className="rounded shadow" />
+          <MemeImage key={meme._id} src={meme.imageUrl} alt="Uploaded Meme" />
         ))}
-      </div>
-    </div>
+      </MemeGrid>
+    </ProfileContainer>
   );
 };
 

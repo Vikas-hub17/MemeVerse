@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { uploadMemeToImgBB } from '../api/uploadMeme';
-import AnimatedButton from '../components/AnimatedButton';
+import Button from '../components/Button';
+import { UploadContainer, UploadTitle, UploadInput, UploadPreview } from '../styles/UploadStyles';
 
 const Upload = () => {
   const [file, setFile] = useState(null);
@@ -27,24 +28,24 @@ const Upload = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-5">
-      <h1 className="text-3xl font-bold mb-4">📤 Upload Meme</h1>
-      <input type="file" accept="image/*" onChange={handleFileChange} className="block w-full p-2 border rounded mb-4" />
-      <input
+    <UploadContainer>
+      <UploadTitle>📤 Upload Your Meme</UploadTitle>
+      <UploadInput type="file" accept="image/*" onChange={handleFileChange} />
+      <UploadInput
         type="text"
         placeholder="Add a caption"
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
-        className="block w-full p-2 border rounded mb-4"
       />
-      <AnimatedButton text={uploading ? 'Uploading...' : 'Upload Meme'} onClick={handleUpload} />
+      <Button onClick={handleUpload}>{uploading ? 'Uploading...' : 'Upload Meme'}</Button>
+
       {uploadedUrl && (
-        <div className="mt-4">
+        <UploadPreview>
           <p>Upload Successful!</p>
-          <img src={uploadedUrl} alt="Uploaded Meme" className="mt-2 rounded shadow" />
-        </div>
+          <img src={uploadedUrl} alt="Uploaded Meme" />
+        </UploadPreview>
       )}
-    </div>
+    </UploadContainer>
   );
 };
 
