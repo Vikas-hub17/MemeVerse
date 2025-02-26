@@ -24,27 +24,29 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
+  
     try {
+      let response;
       if (isSignup) {
-        // Signup flow
-        const response = await axios.post('http://localhost:5000/api/auth/signup', {
+        response = await axios.post('http://localhost:5000/api/auth/signup', {
           name,
           email,
-          password
+          password,
         });
-        handleLogin(response.data.token, response.data.user);
       } else {
-        // Login flow
-        const response = await axios.post('http://localhost:5000/api/auth/login', {
+        response = await axios.post('http://localhost:5000/api/auth/login', {
           email,
-          password
+          password,
         });
-        handleLogin(response.data.token, response.data.user);
       }
+  
+      console.log('API Response:', response.data);
+  
+      handleLogin(response.data.token, response.data.user);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred. Please try again.');
+      console.error('Auth API Error:', err.response?.data || err.message);
+      setError(err.response?.data?.message || 'An unexpected error occurred. Please try again.');
     }
   };
 

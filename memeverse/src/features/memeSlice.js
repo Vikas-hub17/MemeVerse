@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchMemes } from '../api/memeAPI';
+import { fetchPopularMemes } from '../api/memeAPI';
 
 export const getMemes = createAsyncThunk('memes/fetchAll', async () => {
-  const response = await fetchMemes();
+  const response = await fetchPopularMemes();
   return response.data.memes;
 });
 

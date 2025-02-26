@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchMemes } from '../api/memeAPI';
+import { fetchPopularMemes } from '../api/memeAPI';
 import MemeCardComponent from '../components/MemeCard';
 import FilterSortBar from '../components/FilterSortBar';
 import { ExploreContainer, ExploreTitle, MemeGrid } from '../styles/ExploreStyles';
@@ -9,23 +9,18 @@ const Explore = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAllMemes = async () => {
-      try {
-        const memeData = await fetchMemes();
-        setMemes(memeData.slice(0, 20));
-      } catch (error) {
-        console.error('Failed to fetch memes:', error);
-      } finally {
-        setLoading(false);
-      }
+    const loadPopularMemes = async () => {
+      const memeData = await fetchPopularMemes();
+      setMemes(memeData);
+      setLoading(false);
     };
 
-    fetchAllMemes();
+    loadPopularMemes();
   }, []);
 
   return (
     <ExploreContainer>
-      <ExploreTitle>🧭 Explore Memes</ExploreTitle>
+      <ExploreTitle>🔥 Popular Memes</ExploreTitle>
       <FilterSortBar />
       {loading ? (
         <p>Loading memes...</p>

@@ -7,6 +7,7 @@ const Navbar = () => {
       <NavbarLink href="/">Home</NavbarLink>
       <NavbarLink href="/explore">Explore</NavbarLink>
       <NavbarLink href="/upload">Upload</NavbarLink>
+      <NavbarLink href="/generate">Meme Generator</NavbarLink> {/* New Link */}
       <NavbarLink href="/leaderboard">Leaderboard</NavbarLink>
       <NavbarLink href="/profile">Profile</NavbarLink>
       <DarkModeToggle />

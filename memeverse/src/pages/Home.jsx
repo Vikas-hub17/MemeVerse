@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchMemes } from '../api/memeAPI';
+import { fetchPopularMemes } from '../api/memeAPI';
 import MemeCardComponent from '../components/MemeCard';
 import { HomeContainer, HomeTitle, MemeGrid } from '../styles/HomeStyles';
 
@@ -10,7 +10,7 @@ const Home = () => {
   useEffect(() => {
     const loadTrendingMemes = async () => {
       try {
-        const memes = await fetchMemes();
+        const memes = await fetchPopularMemes();
         setTrendingMemes(memes.slice(0, 12)); // Display top 12 memes
       } catch (error) {
         console.error('Failed to fetch memes:', error);

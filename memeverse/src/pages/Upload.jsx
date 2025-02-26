@@ -29,7 +29,7 @@ const Upload = () => {
 
   return (
     <UploadContainer>
-      <UploadTitle>📤 Upload Your Meme</UploadTitle>
+      <UploadTitle>📤 Upload Meme</UploadTitle>
       <UploadInput type="file" accept="image/*" onChange={handleFileChange} />
       <UploadInput
         type="text"
